@@ -18,6 +18,7 @@ import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.render.ViewType;
 import org.apache.http.Consts;
+import org.mobile.mpos.controller.HomeController;
 import org.mobile.mpos.controller.MobileUserController;
 import org.mobile.mpos.interceptor.LoggerInterceptor;
 import org.mobile.mpos.model.MobileUser;
@@ -50,11 +51,15 @@ public class MposConfig extends JFinalConfig{
 
         log.info("开发模式:" + me.getDevMode());
         log.info("编码:" + me.getEncoding());
+
+        me.setError404View("/html/home.html");
+        me.setError500View("/html/home.html");
     }
 
     @Override
     public void configRoute(Routes me) {
-        me.add("mobileUser", MobileUserController.class);
+        me.add("/" , HomeController.class);
+        me.add("/mobileUser", MobileUserController.class);
     }
 
     @Override

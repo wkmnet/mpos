@@ -51,4 +51,8 @@ public abstract class MposController extends Controller{
         result.put("message",message);
         return result;
     }
+
+    public void index(){
+        render("/html/home.html");
+    }
 }
