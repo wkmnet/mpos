@@ -3,9 +3,9 @@ use oracle;
 
 --初始化用户表
 drop table if exists mpos_user;
-create table if not exists mpos_user(
+create table if not exists mpos_manger_user(
     id int(30) primary key AUTO_INCREMENT comment '主健',
-    mobile varchar(20) not null comment '手机号',
+    username varchar(20) not null comment '登陆用户',
     email varchar(60) comment '邮箱信息',
     password varchar(50) comment '密码'
 )ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;

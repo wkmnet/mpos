@@ -26,25 +26,21 @@ import org.mobile.mpos.util.Common;
  * 版权所有,侵权必究！
  * To change this template use File | Settings | File and Code Templates.
  */
-public class MobileUserController extends MposController{
+public class UserController extends MposController{
 
-    //移动用户服务
-    private MobileUserService mobileUserService = Duang.duang(MobileUserService.class);
-
+    /**
+     * 注册
+     */
     public void register(){
-        String mobileNo = getPara("mobile");
-        if(StringUtils.isBlank(mobileNo)){
-            renderJson(fail("MOBILE_NO_EMPTY", "手机号码为空"));
+        String username = getPara("username");
+        if(StringUtils.isBlank(username)){
+            renderJson(fail("USERNAME_NO_EMPTY", "用户名称为空"));
             return;
         }
 
-        if(!Common.isMobile(mobileNo)){
-            renderJson(fail("MOBILE_NO_ILLEGAL", "手机号码非法"));
-            return;
-        }
-
-        if(mobileUserService.existMobileUser(mobileNo)){
-            renderJson(fail("MOBILE_NO_EXIST", "手机号码已存在"));
+        String email = getPara("email");
+        if(StringUtils.isBlank(email)){
+            renderJson(fail("EMAIL_NO_EMPTY", "邮箱为空"));
             return;
         }
 
@@ -59,7 +55,9 @@ public class MobileUserController extends MposController{
             return;
         }
 
-        if(!mobileUserService.addMobileUser(mobileNo,password)){
+        MobileUserService mobileUserService = Duang.duang(MobileUserService.class);
+
+        if(!mobileUserService.addUser(username,email,password)){
             renderJson(fail("MOBILE_USER_SAVE_ERROR", "移动用户保存出错"));
             return;
         }

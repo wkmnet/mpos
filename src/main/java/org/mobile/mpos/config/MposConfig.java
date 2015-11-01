@@ -19,9 +19,9 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.jfinal.render.ViewType;
 import org.apache.http.Consts;
 import org.mobile.mpos.controller.HomeController;
-import org.mobile.mpos.controller.MobileUserController;
+import org.mobile.mpos.controller.UserController;
 import org.mobile.mpos.interceptor.LoggerInterceptor;
-import org.mobile.mpos.model.MobileUser;
+import org.mobile.mpos.model.ManagerUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +59,7 @@ public class MposConfig extends JFinalConfig{
     @Override
     public void configRoute(Routes me) {
         me.add("/" , HomeController.class);
-        me.add("/mobileUser", MobileUserController.class);
+        me.add("/manager", UserController.class);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class MposConfig extends JFinalConfig{
         mysqlPlugin.setDialect(new MysqlDialect());
         mysqlPlugin.setTransactionLevel(8);
         mysqlPlugin.setShowSql(true);
-        mysqlPlugin.addMapping("mpos_user", "id", MobileUser.class);
+        mysqlPlugin.addMapping("mpos_manager_user", "id", ManagerUser.class);
     }
 
     @Override
