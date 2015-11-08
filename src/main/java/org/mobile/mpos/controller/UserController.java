@@ -114,4 +114,19 @@ public class UserController extends MposController{
             renderJson(fail("DELETE_USER_FAIL", "删除用户数据失败"));
         }
     }
+
+    public void login(){
+        String userName = getPara("username");
+
+        if(StringUtils.isBlank(userName)){
+            renderJson(fail("USERNAME_EMPTY", "用户名为空"));
+            return;
+        }
+
+        String password = getPara("password");
+        if(StringUtils.isBlank(password)){
+            renderJson(fail("PASSWORD_EMPTY", "密码为空"));
+            return;
+        }
+    }
 }
