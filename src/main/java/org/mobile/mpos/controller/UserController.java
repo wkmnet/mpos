@@ -12,8 +12,13 @@ package org.mobile.mpos.controller;
 
 import com.jfinal.aop.Duang;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.mobile.mpos.service.MobileUserService;
 import org.mobile.mpos.util.Common;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Create with IntelliJ IDEA
@@ -62,5 +67,51 @@ public class UserController extends MposController{
             return;
         }
         renderJson(success());
+    }
+
+    public void listUser(){
+        String page = getPara("page");
+        if(StringUtils.isBlank(page)){
+            renderJson(fail("PAGE_EMPTY", "页码为空"));
+            return;
+        }
+        String count = getPara("size");
+        if(StringUtils.isBlank(count)){
+            renderJson(fail("SIZE_EMPTY", "每页条数为空"));
+            return;
+        }
+
+        MobileUserService mobileUserService = Duang.duang(MobileUserService.class);
+        long all = mobileUserService.countUser();
+        int offset = (NumberUtils.toInt(page,1) - 1) * NumberUtils.toInt(count,5);
+        int size = NumberUtils.toInt(count,5);
+        long pageSize = 0;
+        if(all % size == 0){
+            pageSize = all / size;
+        } else {
+            pageSize = all / size + 1;
+        }
+        Map<String,Object> result = new HashMap<String, Object>();
+        result.put("pageSize",pageSize);
+        result.put("page",NumberUtils.toInt(page,1));
+        List<Map<String,String>> data = mobileUserService.pageAllUsers(offset, size);
+        result.put("size", NumberUtils.toInt(count,5));
+        result.put("factSize", data.size());
+        result.put("pageData",data);
+        renderJson(success(result));
+    }
+
+    public void deleteUser(){
+        String id = getPara("id");
+        if(StringUtils.isBlank(id)){
+            renderJson(fail("ID_EMPTY", "ID为空"));
+            return;
+        }
+        MobileUserService mobileUserService = Duang.duang(MobileUserService.class);
+        if(mobileUserService.deleteUser(id)){
+            renderJson(success());
+        } else {
+            renderJson(fail("DELETE_USER_FAIL", "删除用户数据失败"));
+        }
     }
 }

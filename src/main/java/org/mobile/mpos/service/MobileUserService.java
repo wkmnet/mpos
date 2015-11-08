@@ -16,6 +16,11 @@ import org.mobile.mpos.util.Common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Create with IntelliJ IDEA
  * Project name : mpos
@@ -34,15 +39,39 @@ public class MobileUserService {
 
     /**
      * 按照手机号寻找用户
-     * @param mobileNo
+     * @param offset
+     * @param size
      * @return
      */
-//    public MobileUser findMobileUserByMobileNo(String mobileNo){
-//        log.info("find user by MobileNo:" + mobileNo);
-//        MobileUser user = mobileUser.findByMobileNo(mobileNo);
-//        log.info("find user by MobileNo result:" + user);
-//        return user;
-//    }
+    public List<Map<String,String>> pageAllUsers(int offset,int size){
+        log.info("page user:" + offset + "," + size);
+        List<Map<String,String>> result = new ArrayList<Map<String, String>>();
+        List<ManagerUser> users = ManagerUser.pageUser(offset, size);
+        for(ManagerUser u:users){
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("username",u.getStr("username"));
+            map.put("email",u.getStr("email"));
+            map.put("password",u.getStr("password"));
+            map.put("id",u.getInt("id").toString());
+            result.add(map);
+        }
+        log.info("find users result:" + result);
+        return result;
+    }
+
+    public boolean deleteUser(String id){
+        return ManagerUser.deleteUserById(id);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public long countUser(){
+        long count = ManagerUser.countUser();
+        log.info("count user:" + count);
+        return count;
+    }
 
     /**
      * 是否存在指定移动用户

@@ -52,7 +52,18 @@ public class LoggerInterceptor implements Interceptor{
         if(map != null){
             StringBuilder para = new StringBuilder();
             for(Map.Entry<String,String[]> entry : map.entrySet()){
-                para.append(entry.getKey() + "=" + entry.getValue());
+                String[] values = entry.getValue();
+                StringBuffer tempValue = new StringBuffer();
+                if(values != null){
+                    tempValue.append("[");
+                    for(String v:values){
+                        tempValue.append(v);
+                        tempValue.append(",");
+                    }
+                    tempValue.deleteCharAt(tempValue.length() - 1);
+                    tempValue.append("]");
+                }
+                para.append(entry.getKey() + "=" + tempValue.toString());
                 para.append(SystemUtils.LINE_SEPARATOR);
             }
             printRequest(para);

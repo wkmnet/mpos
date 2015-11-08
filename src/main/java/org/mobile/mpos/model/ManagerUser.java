@@ -14,6 +14,8 @@ import com.jfinal.plugin.activerecord.Model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 /**
  * Create with IntelliJ IDEA
  * Project name : mpos
@@ -33,8 +35,18 @@ public class ManagerUser extends Model<ManagerUser>{
     //查询使用
     public static ManagerUser me = new ManagerUser();
 
-    public static ManagerUser findByUserByName(String username){
-        return me.findFirst("select * from mpos_manager_user where username=?", username);
+    public static long countUser(){
+        return me.findFirst("select count(id) c from mpos_manger_user").getLong("c");
+    }
+
+    public static boolean deleteUserById(String id){
+        log.info("delete user:" + id);
+        return me.deleteById(id);
+    }
+
+    public static List<ManagerUser> pageUser(int offset,int size){
+        log.info("page user:" + offset + "," + size);
+        return me.find("select * from mpos_manger_user order by id desc limit ?,?", offset, size);
     }
 
     /**
