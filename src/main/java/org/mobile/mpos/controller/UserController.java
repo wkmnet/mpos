@@ -10,9 +10,11 @@
  */
 package org.mobile.mpos.controller;
 
+import com.jfinal.aop.Clear;
 import com.jfinal.aop.Duang;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.mobile.mpos.interceptor.AuthInterceptor;
 import org.mobile.mpos.service.MobileUserService;
 import org.mobile.mpos.util.Common;
 
@@ -115,6 +117,7 @@ public class UserController extends MposController{
         }
     }
 
+    @Clear(AuthInterceptor.class)
     public void login(){
         String userName = getPara("username");
 
@@ -128,5 +131,20 @@ public class UserController extends MposController{
             renderJson(fail("PASSWORD_EMPTY", "密码为空"));
             return;
         }
+
+        MobileUserService mobileUserService = Duang.duang(MobileUserService.class);
+        if(!mobileUserService.existUser(userName)){
+            renderJson(fail("USER_NOT_EXIST", "用户不存在"));
+            return;
+        }
+
+        if(!mobileUserService.isSamePassword(password,userName)){
+            renderJson(fail("PASSWORD_ERROR", "密码错误"));
+            return;
+        }
+
+        getRequest().getSession().setAttribute("user",mobileUserService.findUserByEmail(userName));
+
+        renderJson(success());
     }
 }

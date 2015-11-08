@@ -53,6 +53,6 @@ public abstract class MposController extends Controller{
     }
 
     public void index(){
-        render("/html/home.html");
+        renderJsp("/html/home.html");
     }
 }

@@ -90,3 +90,29 @@ bodyApp.controller("BodyController",function($http,$scope){
         $scope.listUser();
     }
 });
+
+
+var loginApp = angular.module("loginApp",[],function($httpProvider){
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+});
+
+loginApp.controller("LoginController",function($http,$scope,$location,$window){
+    $scope.message = {"respMessage":"","showMessage":false};
+    $scope.userInfo = {"username":"","password":""};
+
+    $scope.login = function(){
+        var data = "username=" + $scope.userInfo.username
+                + "&password=" + $scope.userInfo.password;
+        $http.post("/user/login",data).success(function(response){
+            var result = response;
+            if(result.success){
+                var landingUrl = "http://" + $window.location.host + "/index";
+                $window.open(landingUrl,"_self");
+            } else {
+                $scope.message.showMessage = true;
+                $scope.message.respMessage = result.message;
+            }
+        });
+    }
+
+});

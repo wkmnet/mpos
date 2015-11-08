@@ -49,6 +49,11 @@ public class ManagerUser extends Model<ManagerUser>{
         return me.find("select * from mpos_manger_user order by id desc limit ?,?", offset, size);
     }
 
+    public static ManagerUser findUserByEmail(String email){
+        log.info("find user by email:" + email);
+        return me.findFirst("select * from mpos_manger_user where email=?", email);
+    }
+
     /**
      * 增加用户
      * @param username

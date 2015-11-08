@@ -12,6 +12,7 @@ package org.mobile.mpos.service;
 
 import com.jfinal.aop.Duang;
 import org.mobile.mpos.model.ManagerUser;
+import org.mobile.mpos.model.UserSession;
 import org.mobile.mpos.util.Common;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,14 +75,45 @@ public class MobileUserService {
     }
 
     /**
-     * 是否存在指定移动用户
-     * @param mobileNo
+     * 是否存在指定用户
+     * @param email
      * @return
      */
-//    public boolean existMobileUser(String mobileNo){
-//        MobileUser user = findMobileUserByMobileNo(mobileNo);
-//        return  user != null;
-//    }
+    public boolean existUser(String email){
+        log.info("find user by email:" + email);
+        ManagerUser mu = ManagerUser.findUserByEmail(email);
+        log.info("exist user :" + mu);
+        return  mu != null && email.equals(mu.getStr("email"));
+    }
+
+    /**
+     * 密码是否一致
+     * @param password
+     * @param email
+     * @return
+     */
+    public boolean isSamePassword(String password,String email){
+        log.info("find user by email:" + email);
+        ManagerUser mu = ManagerUser.findUserByEmail(email);
+        log.info("exist user :" + mu);
+        return Common.encryptSHA(password).equals(mu.getStr("password"));
+    }
+
+    /**
+     * 寻找用户
+     * @param email
+     * @return
+     */
+    public UserSession findUserByEmail(String email){
+        log.info("find user by email:" + email);
+        ManagerUser mu = ManagerUser.findUserByEmail(email);
+        log.info("exist user :" + mu);
+        UserSession session = new UserSession();
+        session.setEmail(mu.getStr("email"));
+        session.setUsername(mu.getStr("username"));
+        session.setExpire(System.currentTimeMillis() + 1000 * 60 * 5);
+        return session;
+    }
 
     /**
      * 新增用户

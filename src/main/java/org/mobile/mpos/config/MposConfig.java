@@ -20,6 +20,7 @@ import com.jfinal.render.ViewType;
 import org.apache.http.Consts;
 import org.mobile.mpos.controller.HomeController;
 import org.mobile.mpos.controller.UserController;
+import org.mobile.mpos.interceptor.AuthInterceptor;
 import org.mobile.mpos.interceptor.LoggerInterceptor;
 import org.mobile.mpos.model.ManagerUser;
 import org.mobile.mpos.model.Message;
@@ -81,6 +82,7 @@ public class MposConfig extends JFinalConfig{
     @Override
     public void configInterceptor(Interceptors me) {
         me.add(new LoggerInterceptor());
+        me.add(new AuthInterceptor());
     }
 
     @Override

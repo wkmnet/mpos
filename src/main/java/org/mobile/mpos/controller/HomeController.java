@@ -24,6 +24,6 @@ package org.mobile.mpos.controller;
 public class HomeController extends MposController {
 
     public void index(){
-        render("/html/home.html");
+        renderJsp("/html/home.html");
     }
 }
