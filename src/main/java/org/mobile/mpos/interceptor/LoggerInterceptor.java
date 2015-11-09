@@ -23,6 +23,7 @@ import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -81,7 +82,27 @@ public class LoggerInterceptor implements Interceptor{
         } else {
             logger.info("return:" + value.getClass() + ";" + value);
         }
+        printHeaders(c.getResponse());
         printReturnValue(c.getRender());
+    }
+
+    /**
+     * 打印响应头信息
+     * @param response
+     */
+    private  void printHeaders(HttpServletResponse response){
+        if(response != null){
+            StringBuilder head = new StringBuilder();
+            head.append(SystemUtils.LINE_SEPARATOR);
+            head.append("heads:");
+            head.append(SystemUtils.LINE_SEPARATOR);
+            JSONObject h = new JSONObject();
+            for(String headerName:response.getHeaderNames()){
+                h.put(headerName,response.getHeader(headerName));
+            }
+            head.append(h.toString(4));
+            logger.info(head.toString());
+        }
     }
 
     /**

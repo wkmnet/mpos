@@ -73,5 +73,7 @@ public class AuthInterceptor implements Interceptor {
         us.setExpire(newExpire);
 
         inv.invoke();
+
+        controller.getResponse().setHeader("name",us.getUsername());
     }
 }

@@ -19,6 +19,8 @@ bodyApp.controller("BodyController",function($http,$scope){
 
     $scope.page = {"pageSize":0,"page":1,"size":5,"pageData":""};
 
+    $scope.userName = "匿名用户";
+
     $scope.switchLeftMenu = function(currentIndex){
         if($scope.leftMenu.index != currentIndex){
             $scope.message.showError = false;
@@ -41,7 +43,7 @@ bodyApp.controller("BodyController",function($http,$scope){
         var data = "username=" + $scope.newUserData.username
                 + "&email=" + $scope.newUserData.email
                 + "&password=" + $scope.newUserData.password;
-        $http.post("/user/register",data).success(function(response){
+        $http.post("/user/register",data).success(function(response,headers){
             var result = response;
             if(result.success){
                 $scope.message.showMessage = true;
@@ -50,13 +52,15 @@ bodyApp.controller("BodyController",function($http,$scope){
             }
             $scope.message.respMessage = result.message;
             $scope.newUserData = {"username":"","email":"","password":""};
+            $scope.userName = headers['name'];
         });
     }
 
     $scope.deleteUser = function(userId){
         var data = "id=" + userId;
-        $http.post("/user/deleteUser",data).success(function(response){
+        $http.post("/user/deleteUser",data).success(function(response,headers){
             var result = response;
+            $scope.userName = headers['name'];
             alert(result.message);
             $scope.listUser();
         });

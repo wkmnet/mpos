@@ -26,7 +26,7 @@
     <title>首页</title>
 </head>
 <body>
-<div id="main" style="width: 80%;margin: auto">
+<div id="main" ng-app="bodyApp" ng-controller="BodyController" style="width: 80%;margin: auto">
     <div id="topMenu">
         <nav class="navbar navbar-inverse" role="navigation" style="margin-bottom: 0px">
             <div class="navbar-header">
@@ -36,7 +36,7 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            IOS <b class="caret"></b>
+                            {{userName}} <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="#">注册</a></li>
@@ -66,7 +66,7 @@
             </div>
         </nav>
     </div>
-    <div id="body" ng-app="bodyApp" ng-controller="BodyController">
+    <div id="body">
         <div id="leftMenu" style="width: 20%;float: left;background: #000">
             <ul class="nav nav-pills nav-stacked">
                 <li ng-class="leftMenu.index == 0 ? leftMenu.active:''">
